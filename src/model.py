@@ -7,17 +7,45 @@ class MyModel(nn.Module):
     def __init__(self, num_classes: int = 1000, dropout: float = 0.7) -> None:
 
         super().__init__()
-
-        # YOUR CODE HERE
-        # Define a CNN architecture. Remember to use the variable num_classes
-        # to size appropriately the output of your classifier, and if you use
-        # the Dropout layer, use the variable "dropout" to indicate how much
-        # to use (like nn.Dropout(p=dropout))
+        self.model = nn.Sequential(
+        nn.Conv2d(3, 128, 3, padding=1), #224x224
+        nn.BatchNorm2d(128),
+        nn.ReLU(),
+        nn.MaxPool2d(2,2),#112x112
+            
+        nn.Conv2d(128, 64, 3, padding=1),
+        nn.BatchNorm2d(64),
+        nn.ReLU(),
+        nn.MaxPool2d(2,2),#56x56
+        
+        nn.Conv2d(64, 32, 3, padding=1),
+        nn.BatchNorm2d(32),
+        nn.ReLU(),
+        nn.MaxPool2d(2,2),#16x28x28
+            
+        nn.Conv2d(32, 16, 3, padding=1),
+        nn.BatchNorm2d(16),
+        nn.ReLU(),
+        nn.MaxPool2d(2,2),#16x14x14
+            
+        nn.Conv2d(16, 8, 3, padding=1),
+        nn.BatchNorm2d(8),
+        nn.ReLU(),
+        nn.MaxPool2d(2,2),#8x7x7
+        
+        nn.Flatten(),
+        nn.Linear(8 * 7 * 7, 2048),
+        nn.BatchNorm1d(2048),
+        nn.ReLU(),
+        nn.Linear(2048, 1024),
+        nn.BatchNorm1d(1024),
+        nn.ReLU(),
+        nn.Dropout(p=dropout),
+        nn.Linear(1024, num_classes))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # YOUR CODE HERE: process the input tensor through the
-        # feature extractor, the pooling and the final linear
-        # layers (if appropriate for the architecture chosen)
+
+        x = self.model(x)
         return x
 
 

@@ -104,7 +104,7 @@ def compute_mean_and_std():
         folder, transform=transforms.Compose([transforms.ToTensor()])
     )
     dl = torch.utils.data.DataLoader(
-        ds, batch_size=1, num_workers=multiprocessing.cpu_count()
+        ds, batch_size=1, num_workers=0
     )
 
     mean = 0.0
